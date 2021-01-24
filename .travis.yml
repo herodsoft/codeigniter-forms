@@ -1,11 +1,11 @@
 language: php
 php:
   - '7.4'
-  - nightly
 before_script:
   - printf "\n" | pecl install yaml-beta
   - echo "extension=yaml.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer install
+  - phpunit/phpunit
   - composer require codeigniter4/framework
 
 script:
