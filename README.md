@@ -39,9 +39,9 @@ class PostForm extends FormType
 
     public function buildForm()
     {
-        self::add('name', new TextType(['name'=>'name', 'label'=>'Name']))
-            ->add('email', new EmailType(['name'=>'email', 'label'=>'Correo']))
-            ->add('address', new TextAreaType())
+        self::addInput('name', new TextType(['name'=>'name', 'label'=>'Name']))
+            ->addInput('email', new EmailType(['name'=>'email', 'label'=>'Correo']))
+            ->addInput('address', new TextAreaType())
         ;
     }
 }
