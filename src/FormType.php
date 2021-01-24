@@ -20,7 +20,7 @@ abstract class FormType implements FormTypeInterface
 
     public function buildView(): string
     {
-        $form = form_open('/form');
+        $form = form_open(current_url());
         foreach ($this->inputs as $key =>  $value)
         {
             $form .= $this->getInput($key)->buildType()."<br>";
