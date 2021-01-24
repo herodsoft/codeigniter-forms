@@ -52,6 +52,7 @@ abstract class FormType implements FormTypeInterface
         return $this->inputs[$name];
     }
 
+
     /**
      * @param array $inputs
      */
