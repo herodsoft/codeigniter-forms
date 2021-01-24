@@ -13,7 +13,7 @@
             "email": "herodsoft@gmail.com"
         }
     ],
-    "minimum-stability": "dev-master",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Forms\\CI\\": "src/"
