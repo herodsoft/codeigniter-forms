@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Libraries\Forms;
+namespace Forms\CI;
 
 
 interface FormTypeInterface

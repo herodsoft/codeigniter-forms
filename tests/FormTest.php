@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Test;
+namespace Tests;
 
 
 use CodeIgniter\Test\CIUnitTestCase;

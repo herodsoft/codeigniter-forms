@@ -1,12 +1,11 @@
 <?php
 
 
-namespace App\Libraries\Forms;
+namespace Forms\CI;
 
 
-use App\Libraries\Forms\Types\InputType;
-use App\Libraries\Forms\Types\TypeInputInterface;
-use MongoDB\BSON\Type;
+use Forms\CI\Types\InputType;
+use Forms\CI\Types\TypeInputInterface;
 
 abstract class FormType implements FormTypeInterface
 {

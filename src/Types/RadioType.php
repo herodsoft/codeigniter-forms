@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Libraries\Forms\Types;
+namespace Forms\CI\Types;
 
 
 class RadioType extends InputType implements TypeInputInterface

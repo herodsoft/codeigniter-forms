@@ -1,8 +1,12 @@
 <?php
 
 
-namespace App\Libraries\Forms\Types;
+namespace Forms\CI\Types;
 
+
+use CodeIgniter\CodeIgniter;
+use CodeIgniter\Config\BaseService;
+use CodeIgniter\Config\Config;
 
 abstract class InputType implements TypeInputInterface
 {

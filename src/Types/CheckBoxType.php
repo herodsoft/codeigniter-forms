@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Libraries\Forms\Types;
+namespace Forms\CI\Types;
 
 
 class CheckBoxType extends InputType implements TypeInputInterface
