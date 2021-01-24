@@ -86,7 +86,7 @@ class PostController extends Controller
 
 ```
 
-##Contributing
+## Contributing
 
 We are accepting contributions
 
