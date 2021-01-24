@@ -1,0 +1,13 @@
+anguage: php
+php:
+  - '7.4'
+before_script:
+  - printf "\n" | pecl install yaml-beta
+  - echo "extension=yaml.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - composer install
+
+script:
+  - phpunit --configuration phpunit.xml.dist --coverage-text
+
+notifications:
+  email: false
