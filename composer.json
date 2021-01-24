@@ -1,0 +1,33 @@
+{
+    "name": "hdrodriguez/ci-forms",
+    "description": "Simple library to create forms more fast and easy using Codeigniter 4",
+    "type": "library",
+    "require": {
+        "php": ">=7.4"
+
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hdrodriguez",
+            "email": "herodsoft@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Forms\\CI\\": "src/"
+        }
+    },
+    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "codeigniter4/framework": ">=v4.0.4",
+        "phpunit/phpunit": "^8.5",
+        "codeigniter4/codeigniter4-standard": "^1.0"
+    }
+}

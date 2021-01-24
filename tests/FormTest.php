@@ -13,10 +13,10 @@ class FormTest extends CIUnitTestCase
     {
         $this->assertTrue(true);
     }
-    
+
     public function testSecondExampleTest()
     {
-        $this->assertTrue(true);    
+        $this->assertTrue(true);
     }
 
 }
