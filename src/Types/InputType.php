@@ -7,6 +7,8 @@ namespace Forms\CI\Types;
 use CodeIgniter\CodeIgniter;
 use CodeIgniter\Config\BaseService;
 use CodeIgniter\Config\Config;
+use CodeIgniter\HTTP\Request;
+use Config\Services;
 
 abstract class InputType implements TypeInputInterface
 {
@@ -52,6 +54,7 @@ abstract class InputType implements TypeInputInterface
 
     protected function cleanedProperties($data):array
     {
+        $data['value'] = $data['default'];
         unset(
             $data['isPlaceHolder'],
             $data['isEnable'],
@@ -202,7 +205,18 @@ abstract class InputType implements TypeInputInterface
      */
     public function getValue(): string
     {
-        return $this->value;
+        $request = Services::request();
+        $post = $request->getPost($this->getName());
+
+        if(strlen($this->value)>0)
+        {
+            $value = $this->value;
+        }else
+        {
+            $value = $post??$this->getDefault();
+        }
+
+        return set_value($this->getName(), $value);
     }
 
     /**

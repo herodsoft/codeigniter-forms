@@ -23,7 +23,6 @@ class SelectorType extends InputType
 
         $data = $this->cleanedProperties($data);
         unset($data['options'],$data['value']);
-
         return $this->label() . form_dropdown($data, $this->options, $this->value, '');
     }
 

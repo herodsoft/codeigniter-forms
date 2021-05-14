@@ -13,7 +13,8 @@ trait BuildTypeTrait
         {
             $data[$key]=$value;
         }
-        return $this->label() . form_input($this->cleanedProperties($data),$this->value,'',$this->type);
+        $data['value'] = $this->getValue();
+        return $this->label() . form_input($this->cleanedProperties($data),'',$this->type);
     }
 
 }

@@ -19,6 +19,7 @@ class SubmitType extends InputType implements TypeInputInterface
         }
         $data = $this->cleanedProperties($data);
         unset($data['label']);
+        $data['value'] = $this->getValue();
         return form_submit($data);
     }
 
