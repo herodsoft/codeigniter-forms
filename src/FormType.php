@@ -57,6 +57,11 @@ abstract class FormType implements FormTypeInterface
 
     public function addInput(string $name, TypeInputInterface $type)
     {
+        if(strlen($type->getName()) == 0)
+        {
+            $type->setName($name);
+        }
+
         $this->inputs[$name] = $type;
         return $this;
     }

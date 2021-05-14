@@ -54,7 +54,11 @@ abstract class InputType implements TypeInputInterface
 
     protected function cleanedProperties($data):array
     {
-        $data['value'] = $data['default'];
+        if(!empty($data['default']))
+        {
+            $data['value'] = $data['default'];
+        }
+
         unset(
             $data['isPlaceHolder'],
             $data['isEnable'],
@@ -216,6 +220,7 @@ abstract class InputType implements TypeInputInterface
             $value = $post??$this->getDefault();
         }
 
+        error_log("set_value : {$this->getName()} : " .set_value($this->getName(), $value));
         return set_value($this->getName(), $value);
     }
 
