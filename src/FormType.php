@@ -23,6 +23,7 @@ abstract class FormType implements FormTypeInterface
     protected bool $skipValidation = false;
     protected array $validationRules      = [];
     protected array $validationErrors = [];
+    protected string $formTitle = '';
 
 
     public function __construct()
@@ -47,6 +48,8 @@ abstract class FormType implements FormTypeInterface
         {
             $form = form_open($this->getAction()??current_url(), $this->getAttributes(), $this->getHiddenInputs());
         }
+
+        $form.=$this->getFormTitle();
 
         foreach ($this->inputs as $key =>  $value)
         {
@@ -253,6 +256,24 @@ abstract class FormType implements FormTypeInterface
     {
         return $this->validationErrors;
     }
+
+    /**
+     * @return string
+     */
+    public function getFormTitle(): string
+    {
+        return $this->formTitle;
+    }
+
+    /**
+     * @param string $formTitle
+     */
+    public function setFormTitle(string $formTitle): void
+    {
+        $this->formTitle = $formTitle;
+    }
+
+
 
 
 
