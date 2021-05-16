@@ -98,7 +98,7 @@ class InputTypesTest extends CIUnitTestCase
     public function testSelectorInputReturnCorrectlyData()
     {
         $selector = new SelectorType(['id'=>'address',
-            'name'=>'edad',
+            'name'=>'age',
             'class'=>'form-control',
             'options'=>['1'=>'uno','2'=>'dos'],
             'value'=>'1'
@@ -107,10 +107,11 @@ class InputTypesTest extends CIUnitTestCase
         $dataBuilded = $selector->buildType();
         $this->assertIsString($dataBuilded);
         $this->assertStringContainsString('type="selector"', $dataBuilded);
-        $this->assertStringContainsString('name="edad"', $dataBuilded);
+        $this->assertStringContainsString('name="age"', $dataBuilded);
         $this->assertStringContainsString('value="1" selected="selected"', $dataBuilded);
         $this->assertStringContainsString('<option', $dataBuilded);
     }
+
 
 
 

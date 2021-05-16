@@ -22,7 +22,7 @@ class TextAreaType extends InputType
         {
             $data[$key]=$value;
         }
-
-        return $this->label() . form_textarea($this->cleanedProperties($data), $this->value,'');
+        $data['value'] = $this->getValue();
+        return $this->label() . form_textarea($this->cleanedProperties($data), $this->getValue(),'');
     }
 }

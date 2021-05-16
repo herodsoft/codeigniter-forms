@@ -8,5 +8,6 @@ Interface TypeInputInterface
 {
     public function buildType();
     public function getType();
+    public function getName();
 
 }

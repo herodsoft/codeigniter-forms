@@ -4,11 +4,10 @@
 namespace Forms\CI\Types;
 
 
-class SubmitType extends InputType implements TypeInputInterface
+class ButtonType extends InputType implements TypeInputInterface
 {
 
-
-    protected string $type = 'submit';
+    protected string $type = 'button';
     protected string $style = '';
 
     public function buildType()
@@ -20,8 +19,6 @@ class SubmitType extends InputType implements TypeInputInterface
         $data = $this->cleanedProperties($data);
         unset($data['label']);
         $data['value'] = $this->getValue();
-        return form_submit($data);
+        return form_button($data);
     }
-
-
 }
