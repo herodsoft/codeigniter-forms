@@ -17,6 +17,6 @@ class CheckBoxType extends InputType implements TypeInputInterface
             $data[$key] = $value;
         }
         $data = $this->cleanedProperties($data);
-        return form_checkbox($data) . $this->label();
+        return form_checkbox($data, $this->value, $this->checked, $this->getValue()) . $this->label();
     }
 }

@@ -18,7 +18,8 @@ class RadioType extends InputType implements TypeInputInterface
             $data[$key] = $value;
         }
         $data = $this->cleanedProperties($data);
-        return form_radio($data) . $this->label();
+
+        return form_radio($data, $this->value, $this->checked, $this->getValue()) . $this->label();
     }
 
 

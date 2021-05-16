@@ -220,7 +220,15 @@ abstract class InputType implements TypeInputInterface
             $value = $post??$this->getDefault();
         }
 
-        error_log("set_value : {$this->getName()} : " .set_value($this->getName(), $value));
+        if($this->type === 'checkbox')
+        {
+            return set_checkbox($this->getName(), $value);
+        }
+        if($this->type === 'radio')
+        {
+            return set_radio($this->getName(), $value, '');
+        }
+
         return set_value($this->getName(), $value);
     }
 

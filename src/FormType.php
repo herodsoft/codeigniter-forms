@@ -13,7 +13,7 @@ abstract class FormType implements FormTypeInterface
 {
     protected array $inputs = [];
     protected bool $isSubmited = false;
-    protected bool $isValidated = false;
+    protected bool $isValidated = true;
     protected Request $request;
     protected string $action = ''; //route_name
     protected array $attributes = ['class'=>'', 'id'=>''];
@@ -111,6 +111,7 @@ abstract class FormType implements FormTypeInterface
                 return $resultValidation;
             }
         }
+        return true;
     }
 
     /**
