@@ -7,6 +7,8 @@ namespace Forms\CI\Types;
 use CodeIgniter\CodeIgniter;
 use CodeIgniter\Config\BaseService;
 use CodeIgniter\Config\Config;
+use CodeIgniter\HTTP\Request;
+use Config\Services;
 
 abstract class InputType implements TypeInputInterface
 {
@@ -26,6 +28,13 @@ abstract class InputType implements TypeInputInterface
     protected bool $isPlaceHolder = false;
     protected bool $isEnable = true;
     protected bool $isReadOnly = false;
+
+
+    protected bool $groupInput = true;
+    protected string $classGroup = '';
+    protected bool $hasFeedBack = true;
+    protected string $classFeedBack = '';
+    protected string $contentFeedBack = '';
 
 
     public function __construct(array $options = [])
@@ -52,12 +61,22 @@ abstract class InputType implements TypeInputInterface
 
     protected function cleanedProperties($data):array
     {
+        if(!empty($data['default']))
+        {
+            $data['value'] = $data['default'];
+        }
+
         unset(
             $data['isPlaceHolder'],
             $data['isEnable'],
             $data['isReadOnly'],
             $data['label'],
             $data['default'],
+            $data['groupInput'],
+            $data['classGroup'],
+            $data['hasFeedBack'],
+            $data['classFeedBack'],
+            $data['contentFeedBack'],
         );
 
         $noCommonProperties = ['maxlength','size','style','class','placeholder', 'readonly'];
@@ -88,6 +107,33 @@ abstract class InputType implements TypeInputInterface
         }
 
         return $data;
+    }
+
+    protected function buildInput(): string
+    {
+        $data=[];
+        foreach ($this->getProperties() as $key => $value)
+        {
+            $data[$key]=$value;
+        }
+        $data['value'] = $this->getValue();
+        $input = form_input($this->cleanedProperties($data),'',$this->type);
+        return $this->filteredInput($input);
+    }
+
+    protected function filteredInput($input):string
+    {
+        if($this->isGroupInput())
+        {
+            $input='<div class="'.$this->getClassGroup().'">'.$input;
+
+            if($this->isHasFeedBack())
+            {
+                $input.='<div class="'.$this->getClassFeedBack().'">'.$this->getContentFeedBack().'</div>';
+            }
+            $input.='</div>';
+        }
+        return $input;
     }
 
 
@@ -202,7 +248,27 @@ abstract class InputType implements TypeInputInterface
      */
     public function getValue(): string
     {
-        return $this->value;
+        $request = Services::request();
+        $post = $request->getPost($this->getName());
+
+        if(strlen($this->value)>0)
+        {
+            $value = $this->value;
+        }else
+        {
+            $value = $post??$this->getDefault();
+        }
+
+        if($this->type === 'checkbox')
+        {
+            return set_checkbox($this->getName(), $value);
+        }
+        if($this->type === 'radio')
+        {
+            return set_radio($this->getName(), $value, '');
+        }
+
+        return set_value($this->getName(), $value);
     }
 
     /**
@@ -282,6 +348,136 @@ abstract class InputType implements TypeInputInterface
     {
         return get_object_vars($this);
     }
+
+    /**
+     * @return int
+     */
+    public function getMaxlength(): int
+    {
+        return $this->maxlength;
+    }
+
+    /**
+     * @param int $maxlength
+     */
+    public function setMaxlength(int $maxlength): void
+    {
+        $this->maxlength = $maxlength;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize(int $size): void
+    {
+        $this->size = $size;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStyle(): string
+    {
+        return $this->style;
+    }
+
+    /**
+     * @param string $style
+     */
+    public function setStyle(string $style): void
+    {
+        $this->style = $style;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGroupInput(): bool
+    {
+        return $this->groupInput;
+    }
+
+    /**
+     * @param bool $groupInput
+     */
+    public function setGroupInput(bool $groupInput): void
+    {
+        $this->groupInput = $groupInput;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassGroup(): string
+    {
+        return $this->classGroup;
+    }
+
+    /**
+     * @param string $classGroup
+     */
+    public function setClassGroup(string $classGroup): void
+    {
+        $this->classGroup = $classGroup;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasFeedBack(): bool
+    {
+        return $this->hasFeedBack;
+    }
+
+    /**
+     * @param bool $hasFeedBack
+     */
+    public function setHasFeedBack(bool $hasFeedBack): void
+    {
+        $this->hasFeedBack = $hasFeedBack;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassFeedBack(): string
+    {
+        return $this->classFeedBack;
+    }
+
+    /**
+     * @param string $classFeedBack
+     */
+    public function setClassFeedBack(string $classFeedBack): void
+    {
+        $this->classFeedBack = $classFeedBack;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentFeedBack(): string
+    {
+        return $this->contentFeedBack;
+    }
+
+    /**
+     * @param string $contentFeedBack
+     */
+    public function setContentFeedBack(string $contentFeedBack): void
+    {
+        $this->contentFeedBack = $contentFeedBack;
+    }
+
+
 
 
 

@@ -42,6 +42,30 @@ class PostForm extends FormType
         self::addInput('name', new TextType(['name'=>'name', 'label'=>'Name']))
             ->addInput('email', new EmailType(['name'=>'email', 'label'=>'Correo']))
             ->addInput('address', new TextAreaType())
+            ->addInput('age', new SelectorType(['options'=>[
+                1=>'one',
+                2=>'two',
+                3=>'three',
+                4=>'four',
+                5=>'five',
+            ], 'default'=>3]))
+            ->addInput('password', new PasswordType())
+            ->addInput('remember_me', new CheckBoxType([
+                'value'=>'dog',
+                'checked'=>false,
+                'label'=>'Dog']
+            ))
+            ->addInput('remember_me_2',
+                new CheckBoxType([
+                    'value'=>'chicken',
+                    'checked'=>false,
+                    'label'=>'Gallina'
+                ]))
+            ->addInput('address_info', new FieldSetType(['legend'=>'text of fieldset']))
+            ->addInput('gender_1', new RadioType(['name'=>'gender','value'=>'male', 'checked'=>false, 'label'=>'Masculino']))
+            ->addInput('gender_2', new RadioType(['name'=>'gender','value'=>'female', 'checked'=>false, 'label'=>'Femenino']))
+            ->addInput('address_info_close', new FieldSetCloseType())
+            ->addInput('submit', new SubmitType(['value'=>'Submit']))
         ;
     }
 }
@@ -66,20 +90,27 @@ use CodeIgniter\Controller;
 class PostController extends Controller
 {
 
-    public function index()
+    public function index() : string
     {
         $postModel = new PostModel();
         $data['posts'] = $postModel->asArray()->findAll();
         return view('post/index', $data);
     }
     
-    public function form()
+    public function create(): string
     {
         $form = new PostForm();
+        $form->setRequestHandler($this->request);
+        if($form->isSubmited() && $form->isValidated())
+        {
+            $data = $this->request->getPost();
+            $user = new UserModel();
+            $user->save($data);
 
-        $form->addPropertyField('email')->setLabel('Email');
-        $form->addPropertyField('address')->setLabel('Work Address');
-        return $form->buildView();
+        }else
+        {
+            return $form->buildView();
+        }
     }
 
 }

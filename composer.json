@@ -3,7 +3,8 @@
     "description": "Simple library to create forms more fast and easy using Codeigniter 4",
     "type": "library",
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "symfony/string": "^5.2"
 
     },
     "license": "MIT",

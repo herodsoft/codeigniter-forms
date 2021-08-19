@@ -17,12 +17,18 @@ class TextAreaType extends InputType
     public function buildType()
     {
 
+        return $this->label() . $this->buildInput();
+    }
+
+    protected function buildInput(): string
+    {
         $data=[];
         foreach ($this->getProperties() as $key => $value)
         {
             $data[$key]=$value;
         }
-
-        return $this->label() . form_textarea($this->cleanedProperties($data), $this->value,'');
+        $data['value'] = $this->getValue();
+        $input = form_textarea($this->cleanedProperties($data), $this->getValue(),'');
+        return $this->filteredInput($input);
     }
 }
