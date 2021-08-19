@@ -24,6 +24,15 @@ abstract class FormType implements FormTypeInterface
     protected array $validationRules      = [];
     protected array $validationErrors = [];
     protected string $formTitle = '';
+    protected bool $addErrorOnHeaderForm = true;
+    protected bool $hasInputGroup = true;
+    protected bool $hasFeedback = true;
+    protected bool $addValidationOnFeedBack = true;
+    protected string $classInputGroup = 'input-group';
+    protected string $classFeedbackOnSuccess = 'valid-feedback';
+    protected string $classFeedbackOnError = 'invalid-feedback';
+    protected string $formClassAfterValidation = 'was-validated';
+    protected bool $withNewLine = false;
 
 
     public function __construct()
@@ -35,6 +44,7 @@ abstract class FormType implements FormTypeInterface
     public function buildView(): string
     {
 
+        $this->addAfterValidationFormClass();
         if(!empty($this->getAction()))
         {
             $this->setAction(route_to($this->getAction()));
@@ -50,12 +60,55 @@ abstract class FormType implements FormTypeInterface
         }
 
         $form.=$this->getFormTitle();
+        $form.=$this->addErrorOnHeaderForm?$this->addValidationErrorAsListOnForm():'';
 
         foreach ($this->inputs as $key =>  $value)
         {
-            $form .= $this->getInput($key)->buildType()."<br>";
+            $inputType = $this->groupInput($this->getInput($key));
+            error_log($inputType->getName());
+            $form .= $inputType->buildType().$this->newLine();
         }
         return $form . form_close();
+    }
+
+
+    protected function newLine()
+    {
+        return $this->withNewLine?"<br>":'';
+    }
+
+
+
+    protected function groupInput(InputType $inputType):InputType
+    {
+        if($this->isHasInputGroup())
+        {
+            $inputType->setGroupInput(true);
+            $inputType->setClassGroup($this->getClassInputGroup());
+        }
+
+        if($this->isHasFeedback())
+        {
+            $inputType->setHasFeedBack(true);
+        }
+
+        if(count($this->getValidationErrors()))
+        {
+            $errors = $this->getValidationErrors();
+            if(isset($errors[$inputType->getName()]) && $this->isSubmited())
+            {
+                $inputType->setContentFeedBack($errors[$inputType->getName()]);
+                $inputType->setClassFeedBack($this->getClassFeedbackOnError());
+            }else
+            {
+                if($this->isSubmited())
+                {
+                    $inputType->setClassFeedBack($this->getClassFeedbackOnSuccess());
+                }
+            }
+        }
+
+        return $inputType;
     }
 
     public function addInput(string $name, TypeInputInterface $type)
@@ -75,6 +128,8 @@ abstract class FormType implements FormTypeInterface
         $validation =  Services::validation();
         if(!$this->skipValidation)
         {
+
+
             if(!empty($this->validationRule) && !empty($this->request))
             {
                 $rule = $this->validationRule;
@@ -114,8 +169,20 @@ abstract class FormType implements FormTypeInterface
                 return $resultValidation;
             }
         }
+
         return true;
     }
+
+
+
+    protected function addAfterValidationFormClass()
+    {
+        if($this->isSubmited())
+        {
+            $this->attributes['class'].=' '.$this->formClassAfterValidation;
+        }
+    }
+
 
     /**
      * @return bool
@@ -182,7 +249,7 @@ abstract class FormType implements FormTypeInterface
         return $this->inputs;
     }
 
-    public function getInput($name):TypeInputInterface
+    public function getInput($name):InputType
     {
         return $this->inputs[$name];
     }
@@ -257,6 +324,23 @@ abstract class FormType implements FormTypeInterface
         return $this->validationErrors;
     }
 
+
+    protected function addValidationErrorAsListOnForm()
+    {
+        $errors =  $this->getValidationErrors();
+        $html = '';
+        if(count($errors))
+        {
+            $html = '<div class="alert alert-danger"><ul>';
+            foreach ($errors as $key => $value)
+            {
+                $html.="<li>{$value}</li>";
+            }
+            $html.='</ul></div>';
+        }
+        return $html;
+    }
+
     /**
      * @return string
      */
@@ -272,6 +356,120 @@ abstract class FormType implements FormTypeInterface
     {
         $this->formTitle = $formTitle;
     }
+
+    /**
+     * @return bool
+     */
+    public function isAddErrorOnHeaderForm(): bool
+    {
+        return $this->addErrorOnHeaderForm;
+    }
+
+    /**
+     * @param bool $addErrorOnHeaderForm
+     */
+    public function setAddErrorOnHeaderForm(bool $addErrorOnHeaderForm): void
+    {
+        $this->addErrorOnHeaderForm = $addErrorOnHeaderForm;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasInputGroup(): bool
+    {
+        return $this->hasInputGroup;
+    }
+
+    /**
+     * @param bool $hasInputGroup
+     */
+    public function setHasInputGroup(bool $hasInputGroup): void
+    {
+        $this->hasInputGroup = $hasInputGroup;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasFeedback(): bool
+    {
+        return $this->hasFeedback;
+    }
+
+    /**
+     * @param bool $hasFeedback
+     */
+    public function setHasFeedback(bool $hasFeedback): void
+    {
+        $this->hasFeedback = $hasFeedback;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAddValidationOnFeedBack(): bool
+    {
+        return $this->addValidationOnFeedBack;
+    }
+
+    /**
+     * @param bool $addValidationOnFeedBack
+     */
+    public function setAddValidationOnFeedBack(bool $addValidationOnFeedBack): void
+    {
+        $this->addValidationOnFeedBack = $addValidationOnFeedBack;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassInputGroup(): string
+    {
+        return $this->classInputGroup;
+    }
+
+    /**
+     * @param string $classInputGroup
+     */
+    public function setClassInputGroup(string $classInputGroup): void
+    {
+        $this->classInputGroup = $classInputGroup;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassFeedbackOnSuccess(): string
+    {
+        return $this->classFeedbackOnSuccess;
+    }
+
+    /**
+     * @param string $classFeedbackOnSuccess
+     */
+    public function setClassFeedbackOnSuccess(string $classFeedbackOnSuccess): void
+    {
+        $this->classFeedbackOnSuccess = $classFeedbackOnSuccess;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassFeedbackOnError(): string
+    {
+        return $this->classFeedbackOnError;
+    }
+
+    /**
+     * @param string $classFeedbackOnError
+     */
+    public function setClassFeedbackOnError(string $classFeedbackOnError): void
+    {
+        $this->classFeedbackOnError = $classFeedbackOnError;
+    }
+
+
 
 
 
