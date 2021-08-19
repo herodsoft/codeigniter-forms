@@ -13,17 +13,22 @@ class SelectorType extends InputType
     protected array $options = [];
 
 
-
     public function buildType()
     {
-        $data = [];
-        foreach ($this->getProperties() as $key => $value) {
-            $data[$key] = $value;
-        }
+        return $this->label() . $this->buildInput();
+    }
 
+    protected function buildInput(): string
+    {
+        $data=[];
+        foreach ($this->getProperties() as $key => $value)
+        {
+            $data[$key]=$value;
+        }
         $data = $this->cleanedProperties($data);
         unset($data['options'],$data['value']);
-        return $this->label() . form_dropdown($data, $this->options, $this->getValue(), '');
+        $input = form_dropdown($data, $this->options, $this->getValue(), '');
+        return $this->filteredInput($input);
     }
 
 }
