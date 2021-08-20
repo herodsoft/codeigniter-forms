@@ -33,6 +33,7 @@ abstract class FormType implements FormTypeInterface
     protected string $classFeedbackOnError = 'invalid-feedback';
     protected string $formClassAfterValidation = 'was-validated';
     protected bool $withNewLine = false;
+    protected array $values = [];
 
 
     public function __construct()
@@ -67,6 +68,30 @@ abstract class FormType implements FormTypeInterface
         }
         return $properties;
     }
+
+    /**
+     * @return array
+     */
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param array $values
+     */
+    public function setValues(array $values): FormType
+    {
+        $this->values = $values;
+
+        foreach ($this->inputs as &$input)
+        {
+            $input->setValue($values[$input->getName()]);
+        }
+        return $this;
+    }
+
+
 
 
     public function buildView(): string

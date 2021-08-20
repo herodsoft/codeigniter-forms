@@ -80,6 +80,13 @@ abstract class InputType implements TypeInputInterface
             $data['classFeedBack'],
             $data['contentFeedBack'],
         );
+        foreach ($data as $key => $value)
+        {
+            if(is_array($value))
+            {
+                unset($data[$key]);
+            }
+        }
 
         $noCommonProperties = ['maxlength','size','style','class','placeholder', 'readonly'];
         foreach ($noCommonProperties as $key => $value)
@@ -478,6 +485,8 @@ abstract class InputType implements TypeInputInterface
     {
         $this->contentFeedBack = $contentFeedBack;
     }
+
+
 
 
 
