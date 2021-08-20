@@ -86,7 +86,7 @@ abstract class FormType implements FormTypeInterface
 
         foreach ($this->inputs as &$input)
         {
-            $input->setValue($values[$input->getName()]);
+            $input->setValue($values[$input->getName()]??'');
         }
         return $this;
     }
