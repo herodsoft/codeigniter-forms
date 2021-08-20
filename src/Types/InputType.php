@@ -48,7 +48,9 @@ abstract class InputType implements TypeInputInterface
                 {
                     $this->$key = $value;
                 }
-
+            }else
+            {
+                $this->$key = $value;
             }
         }
         helper('form');
@@ -344,7 +346,7 @@ abstract class InputType implements TypeInputInterface
         $this->isReadOnly = $isReadOnly;
     }
 
-    protected function getProperties():array
+    public function getProperties():array
     {
         return get_object_vars($this);
     }

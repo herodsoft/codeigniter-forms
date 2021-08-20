@@ -1,5 +1,5 @@
 {
-    "name": "hdrodriguez/ci-forms",
+    "name": "herodsoft/ci-forms",
     "description": "Simple library to create forms more fast and easy using Codeigniter 4",
     "type": "library",
     "require": {

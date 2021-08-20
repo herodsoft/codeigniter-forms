@@ -40,6 +40,34 @@ abstract class FormType implements FormTypeInterface
         $this->buildForm();
     }
 
+    public function asArray() : array
+    {
+        $inputs = [];
+        foreach ($this->inputs as $input)
+        {
+            $inputs[] = $this->passValidation($input);
+        }
+        return $inputs;
+    }
+
+    public function passValidation($input) : array
+    {
+        $properties = $input->getProperties();
+        if($this->isSubmited())
+        {
+            $properties['value'] = $input->getValue();
+            $this->runValidation();
+            if($this->getValidationErrors())
+            {
+                if(array_key_exists($properties['name'], $this->getValidationErrors()))
+                {
+                    $properties['message_error'] = $this->getValidationErrors()[$properties['name']];
+                }
+            }
+        }
+        return $properties;
+    }
+
 
     public function buildView(): string
     {
@@ -65,7 +93,6 @@ abstract class FormType implements FormTypeInterface
         foreach ($this->inputs as $key =>  $value)
         {
             $inputType = $this->groupInput($this->getInput($key));
-            error_log($inputType->getName());
             $form .= $inputType->buildType().$this->newLine();
         }
         return $form . form_close();
@@ -468,6 +495,7 @@ abstract class FormType implements FormTypeInterface
     {
         $this->classFeedbackOnError = $classFeedbackOnError;
     }
+
 
 
 
