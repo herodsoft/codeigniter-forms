@@ -1,6 +1,6 @@
 # CI Forms
 
-![Build Status](https://travis-ci.com/hdrodriguez/codeigniter-forms.svg?branch=master)
+![Build Status](https://travis-ci.com/herodsoft/codeigniter-forms.svg?branch=master)
 
 ## Installation
 
