@@ -27,7 +27,7 @@
         }
     },
     "require-dev": {
-        "codeigniter4/framework": ">=v4.0.4",
+        "codeigniter4/framework": ">=v4.3.4",
         "phpunit/phpunit": "^8.5"
     }
 }
