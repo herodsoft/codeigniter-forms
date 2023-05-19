@@ -12,7 +12,7 @@ use Forms\CI\Types\TypeInputInterface;
 abstract class FormType implements FormTypeInterface
 {
     protected array $inputs = [];
-    protected bool $isSubmited = false;
+    protected bool $isSubmitted = false;
     protected bool $isValidated = true;
     protected Request $request;
     protected string $action = ''; //route_name
@@ -54,7 +54,7 @@ abstract class FormType implements FormTypeInterface
     public function passValidation($input) : array
     {
         $properties = $input->getProperties();
-        if($this->isSubmited())
+        if($this->isSubmitted())
         {
             $properties['value'] = $input->getValue();
             $this->runValidation();
@@ -147,13 +147,13 @@ abstract class FormType implements FormTypeInterface
         if(count($this->getValidationErrors()))
         {
             $errors = $this->getValidationErrors();
-            if(isset($errors[$inputType->getName()]) && $this->isSubmited())
+            if(isset($errors[$inputType->getName()]) && $this->isSubmitted())
             {
                 $inputType->setContentFeedBack($errors[$inputType->getName()]);
                 $inputType->setClassFeedBack($this->getClassFeedbackOnError());
             }else
             {
-                if($this->isSubmited())
+                if($this->isSubmitted())
                 {
                     $inputType->setClassFeedBack($this->getClassFeedbackOnSuccess());
                 }
@@ -229,7 +229,7 @@ abstract class FormType implements FormTypeInterface
 
     protected function addAfterValidationFormClass()
     {
-        if($this->isSubmited())
+        if($this->isSubmitted())
         {
             $this->attributes['class'].=' '.$this->formClassAfterValidation;
         }
@@ -274,22 +274,22 @@ abstract class FormType implements FormTypeInterface
     /**
      * @return bool
      */
-    public function isSubmited(): bool
+    public function isSubmitted(): bool
     {
         if( !empty($this->request) && is_a($this->request, Request::class) && $this->request->getMethod() != 'get')
         {
-            $this->setIsSubmited(true);
+            $this->setIsSubmitted(true);
         }
-        return $this->isSubmited;
+        return $this->isSubmitted;
     }
 
     /**
-     * @param bool $isSubmited
+     * @param bool $isSubmitted
      */
-    public function setIsSubmited(bool $isSubmited): void
+    public function setIsSubmitted(bool $isSubmitted): void
     {
 
-        $this->isSubmited = $isSubmited;
+        $this->isSubmitted = $isSubmitted;
     }
 
 

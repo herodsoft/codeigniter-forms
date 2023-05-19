@@ -18,7 +18,7 @@ PHP >= 7.4
 
 Use composer to install 
 ```
-composer require hdrodriguez/ci-forms
+composer require herodsoft/ci-forms
 ```
 
 
